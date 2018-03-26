@@ -4,3 +4,8 @@
 app_index:
     path: /
     controller: App\Controller\DefaultController::index
+
+tasks:
+    type:     rest
+    host:     localhost
+    resource: App\Controller\TasksController
