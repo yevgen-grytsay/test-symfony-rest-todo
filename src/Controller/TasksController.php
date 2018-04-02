@@ -4,17 +4,32 @@ namespace App\Controller;
 
 use App\Entity\Task;
 use App\Form\TaskType;
+use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @Rest\Prefix("/api")
+ */
 class TasksController extends Controller
 {
     /**
      * @Rest\View
      */
     public function getTaskAction($id)
-    {}
+    {
+        /** @var EntityManager $em */
+        $em = $this->get('doctrine')->getManager();
+        $task = $em->find(Task::class, $id);
+        if (!$task) {
+//            $this->createNotFoundException();
+            return new Response('not found', 404);
+        }
+
+        return $this->json($task);
+    }
 
     public function getTasksAction()
     {

@@ -19,7 +19,7 @@ class CreateUserCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setDescription('Add a short description for your command')
+            ->setDescription('Create user with specified name and password')
             ->addArgument('username', InputArgument::REQUIRED, 'User name')
             ->addArgument('password', InputArgument::REQUIRED, 'Password')
         ;
@@ -38,9 +38,7 @@ class CreateUserCommand extends ContainerAwareCommand
 
         /** @var EntityManager $entityManager */
         $entityManager = $this->getContainer()->get('doctrine')->getManager();
-        // $this->entityManager;
-        $entityManager->persist($user);
-        $entityManager->flush();
+        $entityManager->flush($user);
 
 
         $io->success(sprintf('User "%s" successfully created.', $user->getUsername()));

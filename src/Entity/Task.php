@@ -3,11 +3,12 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TaskRepository")
  */
-class Task
+class Task implements \JsonSerializable
 {
     /**
      * @ORM\Id()
@@ -88,5 +89,21 @@ class Task
         $this->user = $user;
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function jsonSerialize()
+    {
+        $normalizer = new ObjectNormalizer();
+        $normalizer->setIgnoredAttributes(['user']);
+        $normalizer->setCallbacks([
+            'createdAt' => function (\DateTimeInterface $date) {
+                return $date->format('Y-m-d H:i:s');
+            }
+        ]);
+
+        return $normalizer->normalize($this);
     }
 }

@@ -9,6 +9,7 @@ RUN pecl install xdebug \
     && echo "env[XDEBUG_CONFIG] = \"idekey=PHPSTORM\"" >> /usr/local/etc/php-fpm.d/www.conf \
     && echo "env[PHP_IDE_CONFIG] = \"serverName=DockerComposeServer\"" >> /usr/local/etc/php-fpm.d/www.conf
 
-RUN apt-get update && apt-get install git -y
+RUN apt-get update && apt-get install git sqlite3 libsqlite3-dev -y \
+    && docker-php-ext-install pdo_sqlite
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
