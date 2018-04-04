@@ -9,3 +9,7 @@ tasks:
     type:     rest
     host:     localhost
     resource: App\Controller\TasksController
+
+login_check:
+    path:     /login_check
+    methods:  [POST]
